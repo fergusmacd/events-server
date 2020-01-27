@@ -1,0 +1,44 @@
+spring.cloud.vault:
+    authentication: APPROLE
+    app-role:
+        role-id: 46193c27-3ff9-a123-8771-6042e2118775
+        secret-id: 8229e0d8-3733-39ca-8994-39762fc9747e
+        role: test-ro
+        app-role-path: applications/test/approle
+    enabled: false
+    host: localhost
+    port: 8200
+    scheme: http
+    uri: http://localhost:8200
+    connection-timeout: 5000
+    read-timeout: 15000
+    config:
+        order: -10
+    generic:
+        enabled: true
+        backend: applications/test/secrets
+        profile-separator: '/'
+        default-context: generic
+        application-name: api-key
+## /v1/secret/test/secrets
+## applications/test/secrets/something
+#    kv:
+#        enabled: true
+#        backend: applications/test
+#        profile-separator: '/'
+#        default-context: secrets
+#        application-name: secrets
+## /v1/secret/data/test/secrets
+# vault kv put applications/test/secrets/api-key google-key=google-key-value-vault
+# Success! Data written to: applications/test/secrets/api-key
+#
+#        enabled: true
+#        backend: applications/test
+#        profile-separator: '/'
+#        default-context: secrets
+#        application-name: api-key
+# search order
+# GET /v1/applications/test/api-key HTTP/1.1 not found
+# GET http://localhost:8200/v1/applications/test/secrets
+
+#18:44:44.856 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: CompositePropertySource {name='vault', propertySources=[LeaseAwareVaultPropertySource@319283127 {name='applications/test/api-key', properties=java.lang.Object@2618d676}, LeaseAwareVaultPropertySource@983689559 {name='applications/test/secrets', properties=java.lang.Object@7c97b868}]}
