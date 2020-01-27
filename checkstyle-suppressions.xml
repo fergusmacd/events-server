@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.0//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+<!--
+https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml
+https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/sun_checks.xml
+https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/suppressions-filter.html
+-->
+<suppressions>
+    <suppress checks="Javadoc" files="."/>
+    <suppress checks="CustomImportOrder" files="."/>
+    <suppress checks="CommentsIndentation" files="."/>
+    <suppress checks="Indentation" files="."/>
+    <suppress checks="LineLength" files="."/>
+    <suppress checks="NewlineAtEndOfFile" files="."/>
+    <suppress checks="HiddenField" files="Employee"/>
+    <suppress checks="HideUtilityClassConstructor" files="DemoApplication"/>
+    <suppress checks="DesignForExtension" files="SwaggerConfig"/>
+    <suppress checks="DesignForExtension" files="CustomMessageSourceConfiguration"/>
+    <suppress checks="AvoidStarImport" files="EmployeeController"/>
+    <suppress checks="DesignForExtension" files="RequestLoggingFilterConfig"/>
+    <suppress checks="RegexpSingleline" files="."/>
+
+    <!--<suppress checks="MagicNumberCheck"-->
+              <!--files="LegacyDatasetConvertor.java"-->
+              <!--lines="221,250-295"/>-->
+</suppressions>
