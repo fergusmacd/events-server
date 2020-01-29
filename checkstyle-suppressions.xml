@@ -15,6 +15,7 @@ https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/suppressions-f
     <suppress checks="LineLength" files="."/>
     <suppress checks="NewlineAtEndOfFile" files="."/>
     <suppress checks="HiddenField" files="Employee"/>
+    <suppress checks="HiddenField" files="Event"/>
     <suppress checks="HideUtilityClassConstructor" files="DemoApplication"/>
     <suppress checks="DesignForExtension" files="SwaggerConfig"/>
     <suppress checks="DesignForExtension" files="CustomMessageSourceConfiguration"/>
