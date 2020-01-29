@@ -27,19 +27,27 @@ import com.mononokehime.events.EventsApplication;
 import com.mononokehime.events.config.CustomMessageSourceConfiguration;
 import com.mononokehime.events.data.Employee;
 import com.mononokehime.events.data.EmployeeRepository;
+import com.mononokehime.events.data.SinglePostgresqlContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.core.Is;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.nio.charset.Charset;
 
@@ -57,9 +65,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = EventsApplication.class)
 @AutoConfigureMockMvc
-@AutoConfigureTestDatabase
 @Slf4j
 public class EmployeeControllerTest {
+
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer = SinglePostgresqlContainer.getInstance();
 
     @Autowired
     private MockMvc mvc;
@@ -83,8 +93,6 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$._embedded.employees", hasSize(2)))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))).andReturn();
 
-       // String content = result.getResponse().getContentAsString();
-      //  System.out.print(content);
     }
 
     @Test

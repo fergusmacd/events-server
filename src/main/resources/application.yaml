@@ -5,10 +5,21 @@ server:
 # management.metrics.tags.application=${spring.application.name}
 # Disable lazy loading for this app
 spring:
-  jpa:
-    open-in-view: false
   application:
     name: events-server
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/events
+    username: event_app
+    password: event_app
+    driverClassName: org.postgresql.Driver
 opentracing:
   jaeger:
     log-spans: true
