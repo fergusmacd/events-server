@@ -3,9 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2.1
-executorType: machine
 jobs:
   build:
+    machine:
+      # specify the version you desire here
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
