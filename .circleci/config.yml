@@ -5,7 +5,7 @@
 version: 2.1
 jobs:
   build:
-    machine:
+    machine: true
       # specify the version you desire here
 
       # Specify service dependencies here if necessary
