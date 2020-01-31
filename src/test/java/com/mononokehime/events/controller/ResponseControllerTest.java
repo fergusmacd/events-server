@@ -24,16 +24,20 @@ package com.mononokehime.events.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mononokehime.events.EventsApplication;
+import com.mononokehime.events.data.SinglePostgresqlContainer;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Properties;
 
@@ -47,12 +51,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = EventsApplication.class)
 @AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ResponseControllerTest {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
     private MockMvc mvc;
+
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer = SinglePostgresqlContainer.getInstance();
 
     @Test
     public void givenResponse_whenGetVersion_thenReturnVersionAsString()

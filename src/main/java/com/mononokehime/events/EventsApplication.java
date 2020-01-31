@@ -39,9 +39,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class EventsApplication {
 
-
-
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder.build();
@@ -50,5 +47,4 @@ public class EventsApplication {
     public static void main(final String[] args) {
         SpringApplication.run(EventsApplication.class, args);
     }
-
 }
