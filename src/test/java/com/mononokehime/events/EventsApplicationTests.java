@@ -23,15 +23,19 @@ package com.mononokehime.events;
 
 
 
+import com.mononokehime.events.data.SinglePostgresqlContainer;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EventsApplicationTests {
-
+	@ClassRule
+	public static PostgreSQLContainer postgreSQLContainer = SinglePostgresqlContainer.getInstance();
 	@Test
 	public void contextLoads() {
 	}
