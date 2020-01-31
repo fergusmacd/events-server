@@ -37,7 +37,10 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-
+      - run:
+          name: maven version
+          command: |
+            mvn --version
       - run:
           name: maven test
           command: |
