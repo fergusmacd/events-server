@@ -2,12 +2,18 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
+orbs:
+  mvn: scx/mvn@1.1.14
 version: 2.1
+executorType: machine
 jobs:
   build:
-    docker:
+    machine: true
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+      IS_MACHINE_EXECUTOR: true
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -16,31 +22,42 @@ jobs:
 
     working_directory: ~/repo
 
-    environment:
-      # Customize the JVM maximum heap limit
-      MAVEN_OPTS: -Xmx3200m
-
     steps:
       - checkout
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - events-server-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:resolve-plugins dependency:go-offline
 
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-
+          key: events-server-{{ checksum "pom.xml" }}
+      - run:
+          name: update maven version
+          command: |
+            if [[ ! -z "$IS_MACHINE_EXECUTOR" ]]; then
+              cd /opt
+              sudo wget http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+              sudo tar -xvsf apache-maven-3.5.4-bin.tar.gz
+              echo "export PATH=/opt/apache-maven-3.5.4/bin:$PATH" >> $BASH_ENV
+              echo
+              echo "Updated mvn executable:"
+              mvn --version
+            else
+              echo "Running in non-machine executor, skipping."
+            fi
+      - run:
+          name: maven version
+          command: |
+            mvn --version
       - run:
           name: maven test
           command: |
-            mvn clean test
+            mvn clean test sonar:sonar
 
       # run deploy to maven repo, no need to run tests again
       - run:
@@ -52,3 +69,8 @@ test:
     - if [[ $GIT_USER_EMAIL ]]; then git config --global user.email "$GIT_USER_EMAIL" ; fi
     - if [[ $GIT_USER_NAME ]]; then git config --global user.name "$GIT_USER_NAME" ; fi
     - if [[ $RELEASE ]]; then mvn -B release:prepare -Dscm-developer-connection=${scmDeveloperConnection} ; fi
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
