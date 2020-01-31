@@ -5,9 +5,9 @@
 orbs:
   mvn: scx/mvn@1.1.14
 version: 2.1
+executorType: machine
 jobs:
   build:
-    machine: true
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
