@@ -57,7 +57,7 @@ jobs:
       - run:
           name: maven test
           command: |
-            mvn clean test
+            mvn clean test sonar:sonar
 
       # run deploy to maven repo, no need to run tests again
       - run:
