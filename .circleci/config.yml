@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 orbs:
-  maven: circleci/maven@1.0.0
+  maven: scx/mvn@1.1.14
 version: 2.1
 jobs:
   build:
@@ -23,6 +23,7 @@ jobs:
 
     steps:
       - checkout
+      - generate_checksum
 
       # Download and cache dependencies
       - restore_cache:
@@ -37,6 +38,7 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+      - update-maven
       - run:
           name: maven version
           command: |
