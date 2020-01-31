@@ -38,7 +38,17 @@ jobs:
       - run:
           name: update maven version
           command: |
-            update-maven
+            if [[ ! -z "$IS_MACHINE_EXECUTOR" ]]; then
+              cd /opt
+              sudo wget http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+              sudo tar -xvsf apache-maven-3.5.4-bin.tar.gz
+              echo "export PATH=/opt/apache-maven-3.5.4/bin:$PATH" >> $BASH_ENV
+              echo
+              echo "Updated mvn executable:"
+              mvn --version
+            else
+              echo "Running in non-machine executor, skipping."
+            fi
       - run:
           name: maven version
           command: |
@@ -46,7 +56,7 @@ jobs:
       - run:
           name: maven test
           command: |
-            mvn clean test
+            mvn clean test sonar:sonar
 
       # run deploy to maven repo, no need to run tests again
       - run:
@@ -58,3 +68,8 @@ test:
     - if [[ $GIT_USER_EMAIL ]]; then git config --global user.email "$GIT_USER_EMAIL" ; fi
     - if [[ $GIT_USER_NAME ]]; then git config --global user.name "$GIT_USER_NAME" ; fi
     - if [[ $RELEASE ]]; then mvn -B release:prepare -Dscm-developer-connection=${scmDeveloperConnection} ; fi
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
