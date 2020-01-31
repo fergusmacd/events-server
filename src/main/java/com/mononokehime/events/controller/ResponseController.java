@@ -54,6 +54,7 @@ public class ResponseController {
 
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
+
         if (request.getHeader("X-Forwarded-For") != null) {
             return new ResponseEntity<>(
                     request.getHeader("X-Forwarded-For"),  HttpStatus.OK);

@@ -71,19 +71,19 @@ class EmployeeController {
 
     // Aggregate root
     @GetMapping("/employees")
-    CollectionModel<EntityModel<Employee>> all() {
+    public CollectionModel<EntityModel<Employee>> getAll() {
         log.debug("********** entered all /employees" + getGoogleKey());
         List<EntityModel<Employee>> employees = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return new CollectionModel<>(employees,
-                linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
+                linkTo(methodOn(EmployeeController.class).getAll()).withSelfRel());
     }
 
     @Timed("employees-create")
     @PostMapping("/employees")
-    ResponseEntity<?> newEmployee(@Valid @RequestBody final Employee newEmployee) throws URISyntaxException {
+    public ResponseEntity<?> newEmployee(@Valid @RequestBody final Employee newEmployee) throws URISyntaxException {
 
         EntityModel<Employee> resource = assembler.toModel(repository.save(newEmployee));
         //resource.getLink("employees").toString()
@@ -96,7 +96,7 @@ class EmployeeController {
     // Single item
 
     @GetMapping("/employees/{id}")
-    EntityModel<Employee> one(@PathVariable final Long id) {
+    public EntityModel<Employee> one(@PathVariable final Long id) {
         log.debug("********* entered one /employees/{id}");
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
@@ -106,7 +106,7 @@ class EmployeeController {
 
     @Timed("employees-update")
     @PutMapping("/employees/{id}")
-    ResponseEntity<?> replaceEmployee(@RequestBody final Employee newEmployee, @PathVariable final Long id) throws URISyntaxException {
+    public ResponseEntity<?> replaceEmployee(@RequestBody final Employee newEmployee, @PathVariable final Long id) throws URISyntaxException {
 
         Employee updatedEmployee = repository.findById(id)
                 .map(employee -> {
@@ -128,7 +128,7 @@ class EmployeeController {
 
     @Timed("employee-delete")
     @DeleteMapping("/employees/{id}")
-    ResponseEntity<?> deleteEmployee(@PathVariable final Long id) {
+    public ResponseEntity<?> deleteEmployee(@PathVariable final Long id) {
 
         repository.deleteById(id);
 
@@ -136,11 +136,11 @@ class EmployeeController {
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(final MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+    private Map<String, String> handleValidationExceptions(final MethodArgumentNotValidException ex) {
+        final Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
+            final String fieldName = ((FieldError) error).getField();
+            final String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
         return errors;

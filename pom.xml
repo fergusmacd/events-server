@@ -328,10 +328,6 @@
             </configuration>
           </execution>
         </executions>
-        <!--<configuration>-->
-        <!--<licenseName>my_license</licenseName>-->
-        <!--<licenseResolver>${project.baseUri}/src/license</licenseResolver>-->
-        <!--</configuration>-->
       </plugin>
       <!-- https://spotbugs.readthedocs.io/en/latest/maven.html -->
       <plugin>
@@ -531,7 +527,6 @@
               <consoleOutput>true</consoleOutput>
               <failsOnError>true</failsOnError>
               <failOnViolation>true</failOnViolation>
-              <!--<linkXRef>true</linkXRef>-->
               <violationSeverity>warning</violationSeverity>
               <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
               <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
@@ -542,23 +537,6 @@
       </plugin>
     </plugins>
   </build>
-  <!--<build>-->
-  <!--<resources>-->
-  <!--<resource>-->
-  <!--<directory>src/main/resources</directory>-->
-  <!--<filtering>true</filtering>-->
-  <!--</resource>-->
-  <!--</resources>-->
-  <!--<plugins>-->
-  <!--<plugin>-->
-  <!--<groupId>org.springframework.boot</groupId>-->
-  <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-  <!--<configuration>-->
-  <!--<mainClass>com.mononokehime.events.EventsApplication</mainClass>-->
-  <!--</configuration>-->
-  <!--</plugin>-->
-  <!--</plugins>-->
-  <!--</build>-->
   <profiles>
     <profile>
       <id>reporting</id>
@@ -686,23 +664,6 @@
             </configuration>
           </plugin>
           <!--&lt;!&ndash; https://bsorrentino.github.io/maven-confluence-plugin/project-summary.html &ndash;&gt;-->
-          <!--<plugin>-->
-          <!--<groupId>org.bsc.maven</groupId>-->
-          <!--<artifactId>confluence-reporting-maven-plugin</artifactId>-->
-          <!--<version>${confluence-reporting-maven-plugin.version}</version>-->
-          <!--<configuration>-->
-          <!--<username>confluence_user</username>-->
-          <!--<password>confluence_user_password</password>-->
-          <!--<serverId>my_confluence_server</serverId>-->
-          <!--<endPoint>https://confluence_url/confluence/rest/api</endPoint>-->
-          <!--<spaceKey>SPACE_KEY</spaceKey>-->
-          <!--<siteDescriptor>${project.basedir}/target/filtered/site.xml</siteDescriptor>-->
-          <!--<parentPageTitle>Parent Page in Confluence</parentPageTitle>-->
-          <!--<properties>-->
-          <!--<myprop1>classpath:${project.basedir}/src/main/resources/project-info-report.properties</myprop1>-->
-          <!--</properties>-->
-          <!--</configuration>-->
-          <!--</plugin>-->
         </plugins>
       </build>
       <reporting>
@@ -756,14 +717,6 @@
               <targetDirectory>target/site</targetDirectory>
               <includeXmlInSite>true</includeXmlInSite>
               <showPmdLog>false</showPmdLog>
-              <!--<minimumTokens>100</minimumTokens>-->
-              <!--<excludes>-->
-              <!--<exclude>**/*Bean.java</exclude>-->
-              <!--<exclude>**/generated/*.java</exclude>-->
-              <!--</excludes>-->
-              <!--<excludeRoots>-->
-              <!--<excludeRoot>target/generated-sources</excludeRoot>-->
-              <!--</excludeRoots>-->
             </configuration>
           </plugin>
           <!-- https://spotbugs.github.io/spotbugs-maven-plugin/usage.html -->
@@ -943,7 +896,6 @@
             <reportSets>
               <reportSet>
                 <reports>
-                  <!--<report>aggregate</report>-->
                   <report>check</report>
                 </reports>
               </reportSet>
