@@ -35,7 +35,10 @@ jobs:
           paths:
             - ~/.m2
           key: events-server-{{ checksum "pom.xml" }}
-      - update-maven
+      - run:
+          name: update maven version
+          command: |
+            update-maven
       - run:
           name: maven version
           command: |
