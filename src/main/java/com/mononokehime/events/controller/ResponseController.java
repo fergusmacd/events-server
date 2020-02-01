@@ -44,6 +44,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
 
+import static org.owasp.encoder.Encode.forHtml;
+
 
 @RestController
 public class ResponseController {
@@ -56,19 +58,20 @@ public class ResponseController {
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
 
         if (request.getHeader("X-Forwarded-For") != null) {
+            final String responseValue = forHtml(request.getHeader("X-Forwarded-For"));
             return new ResponseEntity<>(
-                    request.getHeader("X-Forwarded-For"),  HttpStatus.OK);
+                    responseValue,  HttpStatus.OK);
         } else {
+            final String responseValue = forHtml(request.getRemoteAddr());
             return new ResponseEntity<>(
-                    request.getRemoteAddr(),  HttpStatus.OK);
+                    responseValue,  HttpStatus.OK);
         }
     }
 
     @GetMapping("/headers")
     public final ResponseEntity<String> customHeader(final HttpServletRequest request, @RequestHeader final HttpHeaders headers) throws SocketException {
         final String response = httpServletRequestToString(request, headers);
-//        return new EntityModel(response,
-//                linkTo(methodOn(ResponseController.class).customHeader(request, headers)).withSelfRel());
+
 
         return new ResponseEntity<>(
                 response, headers, HttpStatus.OK);
@@ -87,7 +90,7 @@ public class ResponseController {
 
 
         sb.append("Request Context = [" + request.getContextPath() + "], \n");
-        sb.append("Request path info = [" + request.getPathInfo() + "],  \n");
+        sb.append("Request path info = [" + forHtml(request.getPathInfo()) + "],  \n");
         sb.append("Request query string = [" + request.getQueryString() + "],  \n");
         sb.append("Request remote user = [" + request.getRemoteUser() + "],  \n");
         sb.append("Request session id = [" + request.getRequestedSessionId() + "],  \n");
