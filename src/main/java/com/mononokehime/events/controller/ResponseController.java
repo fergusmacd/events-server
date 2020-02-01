@@ -91,19 +91,19 @@ public class ResponseController {
         final StringBuilder sb = new StringBuilder();
 
 
-        sb.append("Request Context = [" + request.getContextPath() + CARRIAGE_RETURN);
+        sb.append("Request Context = [" + forHtml(request.getContextPath()) + CARRIAGE_RETURN);
         sb.append("Request path info = [" + forHtml(request.getPathInfo()) + CARRIAGE_RETURN);
-        sb.append("Request query string = [" + request.getQueryString() + CARRIAGE_RETURN);
-        sb.append("Request remote user = [" + request.getRemoteUser() + CARRIAGE_RETURN);
-        sb.append("Request session id = [" + request.getRequestedSessionId() + CARRIAGE_RETURN);
+        sb.append("Request query string = [" + forHtml(request.getQueryString()) + CARRIAGE_RETURN);
+        sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
+        sb.append("Request session id = [" + forHtml(request.getRequestedSessionId()) + CARRIAGE_RETURN);
 
-        sb.append("Request request url = [" + request.getRequestURL().toString() + CARRIAGE_RETURN);
-        sb.append("Request remote user = [" + request.getRemoteUser() + CARRIAGE_RETURN);
-        sb.append("Request remote addr = [" + request.getRemoteAddr() + CARRIAGE_RETURN);
-        sb.append("Request remote host = [" + request.getRemoteHost() + CARRIAGE_RETURN);
-        sb.append("Request server name = [" + request.getServerName() + CARRIAGE_RETURN);
+        sb.append("Request request url = [" + forHtml(request.getRequestURL().toString()) + CARRIAGE_RETURN);
+        sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
+        sb.append("Request remote addr = [" + forHtml(request.getRemoteAddr()) + CARRIAGE_RETURN);
+        sb.append("Request remote host = [" + forHtml(request.getRemoteHost()) + CARRIAGE_RETURN);
+        sb.append("Request server name = [" + forHtml(request.getServerName()) + CARRIAGE_RETURN);
 
-        sb.append("Request Method = [" + request.getMethod() + CARRIAGE_RETURN);
+        sb.append("Request Method = [" + forHtml(request.getMethod()) + CARRIAGE_RETURN);
         sb.append("Request URL Path = [" + request.getRequestURL() + CARRIAGE_RETURN);
 
 
@@ -114,7 +114,6 @@ public class ResponseController {
             while (enumeration.hasMoreElements()) {
                 final InetAddress i = (InetAddress) enumeration.nextElement();
                 sb.append("Network address: " + i.getHostAddress() + "\n");
-                //System.out.println(i.getHostAddress());
             }
         }
 
