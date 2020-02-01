@@ -23,8 +23,11 @@ package com.mononokehime.events.controller;
 import com.mononokehime.events.data.Employee;
 import com.mononokehime.events.data.EmployeeNotFoundException;
 import com.mononokehime.events.data.EmployeeRepository;
+import com.mononokehime.events.model.EmployeeDTO;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.hateoas.CollectionModel;
@@ -55,6 +58,8 @@ class EmployeeController {
     @Autowired
     private Environment env;
 
+    private final ModelMapper modelMapper = new ModelMapper();
+
     public String getGoogleKey() {
         return env.getProperty("fake-key");
     }
@@ -67,50 +72,66 @@ class EmployeeController {
 
         this.repository = repository;
         this.assembler = assembler;
+
+        modelMapper.getConfiguration()
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+    }
+
+    private List<EmployeeDTO> convertEntityListToModelList(final List<Employee> employees) {
+        return employees.stream()
+                .map(employee -> modelMapper.map(employee, EmployeeDTO.EmployeeDTOBuilder.class).build())
+                .collect(Collectors.toList());
     }
 
     // Aggregate root
     @GetMapping("/employees")
-    CollectionModel<EntityModel<Employee>> all() {
+    public CollectionModel<EntityModel<EmployeeDTO>> getAll() {
         log.debug("********** entered all /employees" + getGoogleKey());
-        List<EntityModel<Employee>> employees = repository.findAll().stream()
+        // bit of a grim call!
+        List<EntityModel<EmployeeDTO>> employees = convertEntityListToModelList(repository.findAll()).stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return new CollectionModel<>(employees,
-                linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
+                linkTo(methodOn(EmployeeController.class).getAll()).withSelfRel());
     }
 
     @Timed("employees-create")
     @PostMapping("/employees")
-    ResponseEntity<?> newEmployee(@Valid @RequestBody final Employee newEmployee) throws URISyntaxException {
+    public ResponseEntity<?> newEmployee(@Valid @RequestBody final EmployeeDTO employeeDTO) throws URISyntaxException {
 
-        EntityModel<Employee> resource = assembler.toModel(repository.save(newEmployee));
-        //resource.getLink("employees").toString()
-        Link link = linkTo(EmployeeController.class).slash(newEmployee.getId()).withSelfRel().withRel("employees");
+        Employee employee = modelMapper.map(employeeDTO, Employee.EmployeeBuilder.class).build();
+        Employee newEmployee = repository.save(employee);
+
+        EmployeeDTO newEmployeeDTO = modelMapper.map(newEmployee, EmployeeDTO.EmployeeDTOBuilder.class).build();
+        Link link = linkTo(EmployeeController.class).slash(newEmployeeDTO.getId()).withSelfRel().withRel("employees");
         return ResponseEntity
                 .created(new URI(link.getHref()))
-                .body(resource);
+                .body(assembler.toModel(newEmployeeDTO));
     }
 
     // Single item
 
     @GetMapping("/employees/{id}")
-    EntityModel<Employee> one(@PathVariable final Long id) {
+    public EntityModel<EmployeeDTO> one(@PathVariable final Long id) {
         log.debug("********* entered one /employees/{id}");
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
 
-        return assembler.toModel(employee);
+        EmployeeDTO employeeDTO = modelMapper.map(employee, EmployeeDTO.EmployeeDTOBuilder.class).build();
+        ResponseEntity.ok(employeeDTO);
+        return assembler.toModel(employeeDTO);
     }
 
     @Timed("employees-update")
     @PutMapping("/employees/{id}")
-    ResponseEntity<?> replaceEmployee(@RequestBody final Employee newEmployee, @PathVariable final Long id) throws URISyntaxException {
+    public ResponseEntity<?> replaceEmployee(@RequestBody final EmployeeDTO employeeDTO, @PathVariable final Long id) throws URISyntaxException {
+        Employee newEmployee = modelMapper.map(employeeDTO, Employee.EmployeeBuilder.class).build();
 
         Employee updatedEmployee = repository.findById(id)
                 .map(employee -> {
-                    employee.setName(newEmployee.getName());
+                    employee.setFirstName(newEmployee.getFirstName());
                     employee.setRole(newEmployee.getRole());
                     return repository.save(employee);
                 })
@@ -119,8 +140,9 @@ class EmployeeController {
                     return repository.save(newEmployee);
                 });
 
-        EntityModel<Employee> resource = assembler.toModel(updatedEmployee);
-        Link link = linkTo(EmployeeController.class).slash(newEmployee.getId()).withSelfRel().withRel("employees");
+        EmployeeDTO newEmployeeDTO = modelMapper.map(updatedEmployee, EmployeeDTO.EmployeeDTOBuilder.class).build();
+        EntityModel<EmployeeDTO> resource = assembler.toModel(newEmployeeDTO);
+        Link link = linkTo(EmployeeController.class).slash(newEmployeeDTO.getId()).withSelfRel().withRel("employees");
         return ResponseEntity
                 .created(new URI(link.getHref()))
                 .body(resource);
@@ -128,7 +150,7 @@ class EmployeeController {
 
     @Timed("employee-delete")
     @DeleteMapping("/employees/{id}")
-    ResponseEntity<?> deleteEmployee(@PathVariable final Long id) {
+    public ResponseEntity<?> deleteEmployee(@PathVariable final Long id) {
 
         repository.deleteById(id);
 
@@ -136,11 +158,11 @@ class EmployeeController {
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(final MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+    private Map<String, String> handleValidationExceptions(final MethodArgumentNotValidException ex) {
+        final Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
+            final String fieldName = ((FieldError) error).getField();
+            final String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
         return errors;

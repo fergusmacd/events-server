@@ -25,6 +25,7 @@ package com.mononokehime.events.data;
 
 
 
+import com.mononokehime.events.model.EmployeeDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +38,16 @@ class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(final EmployeeRepository repository) {
         return args -> {
-            log.info("Preloading " + repository.save(new Employee("Bilbo", "Baggins", "burglar")));
-            log.info("Preloading " + repository.save(new Employee("Frodo", "Baggins", "thief")));
+            String firstName = "bilbo";
+            String lastName = "baggins";
+            String role = "wraith";
+            Employee employee = Employee.builder().firstName(firstName).lastName(lastName).role(role).build();
+            log.info("Preloading " + repository.save(employee));
+            firstName = "Frodo";
+            lastName = "Baggins";
+            role = "thief";
+            employee = Employee.builder().firstName(firstName).lastName(lastName).role(role).build();
+            log.info("Preloading " + repository.save(employee));
         };
     }
 }

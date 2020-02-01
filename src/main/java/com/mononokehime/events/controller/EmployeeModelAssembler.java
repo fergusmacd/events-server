@@ -21,7 +21,7 @@ package com.mononokehime.events.controller;
  */
 
 
-import com.mononokehime.events.data.Employee;
+import com.mononokehime.events.model.EmployeeDTO;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -30,13 +30,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-final class EmployeeModelAssembler implements RepresentationModelAssembler<Employee, EntityModel<Employee>> {
+final class EmployeeModelAssembler implements RepresentationModelAssembler<EmployeeDTO, EntityModel<EmployeeDTO>> {
 
     @Override
-    public EntityModel<Employee> toModel(final Employee employee) {
+    public EntityModel<EmployeeDTO> toModel(final EmployeeDTO employeeDTO) {
 
-        return new EntityModel<>(employee,
-                linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
-                linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+        return new EntityModel<>(employeeDTO,
+                linkTo(methodOn(EmployeeController.class).one(employeeDTO.getId())).withSelfRel(),
+                linkTo(methodOn(EmployeeController.class).getAll()).withRel("employees"));
     }
+
 }

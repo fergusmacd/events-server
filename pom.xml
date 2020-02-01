@@ -55,6 +55,7 @@
   </distributionManagement>
   <properties>
     <checkstyle.configLocation>sun_checks.xml</checkstyle.configLocation>
+    <commons-lang3.version>3.9</commons-lang3.version>
     <docker.image.prefix>mononoke</docker.image.prefix>
     <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
     <dependency-check-maven.version>5.3.0</dependency-check-maven.version>
@@ -76,12 +77,15 @@
     <maven-surefire-report-plugin.version>2.22.2</maven-surefire-report-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-s3-wagon.version>1.2.0</maven-s3-wagon.version>
+    <modelmapper.version>2.3.5</modelmapper.version>
     <micrometer.version>1.3.3</micrometer.version>
     <postgresql-test.version>1.12.5</postgresql-test.version>
+    <sonar.coverage.exclusions>**/data/*,**/model/*</sonar.coverage.exclusions>
     <sonar.projectKey>fergusmacd_events-server</sonar.projectKey>
     <sonar.organization>fergusmacd</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+    <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.10.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
     <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
@@ -101,6 +105,18 @@
       <artifactId>springfox-swagger2</artifactId>
       <version>${springfox-swagger2-snapshot.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>${modelmapper.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons-lang3.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-bean-validators</artifactId>
@@ -167,11 +183,11 @@
     <!-- jaeger tracing
     https://github.com/opentracing-contrib/java-spring-jaeger
     -->
-    <dependency>
-      <groupId>io.opentracing.contrib</groupId>
-      <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
-      <version>2.0.3</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>io.opentracing.contrib</groupId>-->
+      <!--<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>-->
+      <!--<version>2.0.3</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -338,10 +354,6 @@
             </configuration>
           </execution>
         </executions>
-        <!--<configuration>-->
-        <!--<licenseName>my_license</licenseName>-->
-        <!--<licenseResolver>${project.baseUri}/src/license</licenseResolver>-->
-        <!--</configuration>-->
       </plugin>
       <!-- https://spotbugs.readthedocs.io/en/latest/maven.html -->
       <plugin>
@@ -541,7 +553,6 @@
               <consoleOutput>true</consoleOutput>
               <failsOnError>true</failsOnError>
               <failOnViolation>true</failOnViolation>
-              <!--<linkXRef>true</linkXRef>-->
               <violationSeverity>warning</violationSeverity>
               <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
               <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
@@ -552,23 +563,6 @@
       </plugin>
     </plugins>
   </build>
-  <!--<build>-->
-  <!--<resources>-->
-  <!--<resource>-->
-  <!--<directory>src/main/resources</directory>-->
-  <!--<filtering>true</filtering>-->
-  <!--</resource>-->
-  <!--</resources>-->
-  <!--<plugins>-->
-  <!--<plugin>-->
-  <!--<groupId>org.springframework.boot</groupId>-->
-  <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-  <!--<configuration>-->
-  <!--<mainClass>com.mononokehime.events.EventsApplication</mainClass>-->
-  <!--</configuration>-->
-  <!--</plugin>-->
-  <!--</plugins>-->
-  <!--</build>-->
   <profiles>
     <profile>
       <id>reporting</id>
@@ -696,23 +690,6 @@
             </configuration>
           </plugin>
           <!--&lt;!&ndash; https://bsorrentino.github.io/maven-confluence-plugin/project-summary.html &ndash;&gt;-->
-          <!--<plugin>-->
-          <!--<groupId>org.bsc.maven</groupId>-->
-          <!--<artifactId>confluence-reporting-maven-plugin</artifactId>-->
-          <!--<version>${confluence-reporting-maven-plugin.version}</version>-->
-          <!--<configuration>-->
-          <!--<username>confluence_user</username>-->
-          <!--<password>confluence_user_password</password>-->
-          <!--<serverId>my_confluence_server</serverId>-->
-          <!--<endPoint>https://confluence_url/confluence/rest/api</endPoint>-->
-          <!--<spaceKey>SPACE_KEY</spaceKey>-->
-          <!--<siteDescriptor>${project.basedir}/target/filtered/site.xml</siteDescriptor>-->
-          <!--<parentPageTitle>Parent Page in Confluence</parentPageTitle>-->
-          <!--<properties>-->
-          <!--<myprop1>classpath:${project.basedir}/src/main/resources/project-info-report.properties</myprop1>-->
-          <!--</properties>-->
-          <!--</configuration>-->
-          <!--</plugin>-->
         </plugins>
       </build>
       <reporting>
@@ -766,14 +743,6 @@
               <targetDirectory>target/site</targetDirectory>
               <includeXmlInSite>true</includeXmlInSite>
               <showPmdLog>false</showPmdLog>
-              <!--<minimumTokens>100</minimumTokens>-->
-              <!--<excludes>-->
-              <!--<exclude>**/*Bean.java</exclude>-->
-              <!--<exclude>**/generated/*.java</exclude>-->
-              <!--</excludes>-->
-              <!--<excludeRoots>-->
-              <!--<excludeRoot>target/generated-sources</excludeRoot>-->
-              <!--</excludeRoots>-->
             </configuration>
           </plugin>
           <!-- https://spotbugs.github.io/spotbugs-maven-plugin/usage.html -->
@@ -953,7 +922,6 @@
             <reportSets>
               <reportSet>
                 <reports>
-                  <!--<report>aggregate</report>-->
                   <report>check</report>
                 </reports>
               </reportSet>
