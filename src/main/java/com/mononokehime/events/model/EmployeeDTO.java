@@ -1,4 +1,4 @@
-package com.mononokehime.events.data;
+package com.mononokehime.events.model;
 
 /*-
  * #%L
@@ -21,27 +21,24 @@ package com.mononokehime.events.data;
  */
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-@Data
-@Entity
+import javax.validation.constraints.Size;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class Employee {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@ToString
+@EqualsAndHashCode(exclude = {"id"})
+public class EmployeeDTO extends RepresentationModel<EmployeeDTO> {
 
-    private @Id
-    @GeneratedValue
-    Long id;
-    @Size(min=2, message="{name.minsize}")
-    @Size(max=16, message="{name.maxsize}")
+    private Long id;
+    @Size(min = 2, message = "{name.minsize}")
+    @Size(max = 16, message = "{name.maxsize}")
     private String firstName;
     private String lastName;
     private String role;

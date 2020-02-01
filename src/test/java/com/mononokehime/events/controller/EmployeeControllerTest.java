@@ -25,9 +25,9 @@ package com.mononokehime.events.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mononokehime.events.EventsApplication;
 import com.mononokehime.events.config.CustomMessageSourceConfiguration;
-import com.mononokehime.events.data.Employee;
 import com.mononokehime.events.data.EmployeeRepository;
 import com.mononokehime.events.data.SinglePostgresqlContainer;
+import com.mononokehime.events.model.EmployeeDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.core.Is;
 import org.junit.ClassRule;
@@ -41,6 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -90,7 +91,7 @@ public class EmployeeControllerTest {
         MvcResult result = mvc.perform(get("/employees")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.employees", hasSize(2)))
+                .andExpect(jsonPath("$._embedded.employeeDToes", hasSize(2)))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))).andReturn();
 
     }
@@ -103,7 +104,8 @@ public class EmployeeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(id)))
-                .andExpect(jsonPath("$.name", is("Bilbo Baggins"))).andReturn();
+                .andExpect(jsonPath("$.firstName", is("bilbo")))
+                .andExpect(jsonPath("$.lastName", is("baggins"))).andReturn();
     }
 
     @Test
@@ -120,22 +122,17 @@ public class EmployeeControllerTest {
     public void createEmployee_whenCreateOneNoName_thenReturnError()
             throws Exception {
         MediaType textPlainUtf8 = new MediaType(MediaType.APPLICATION_JSON, Charset.forName("UTF-8"));
-        Employee employee = new Employee("", "Gangee", "ring bearer");
-        String json = mapper.writeValueAsString(employee);
+        String firstName = "";
+        String lastName = "Gangee";
+        String role = "ring bearer";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder().firstName(firstName).lastName(lastName).role(role).build();
+        String json = mapper.writeValueAsString(employeeDTO);
         MvcResult result = mvc.perform(post("/employees")
                 .content(json)
                 .contentType(textPlainUtf8))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.firstName", Is.is("Name should have at least 2 characters")))
                 .andReturn();
-
-//      .andExpect(MockMvcResultMatchers.status().isBadRequest())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Is.is("Name is mandatory")))
-//                .andExpect(MockMvcResultMatchers.content()
-//                        .contentType(MediaType.APPLICATION_JSON_UTF8));
-        log.error("************* entered one /employees/"+result);
-        log.error("************* entered one /employees/"+result.getResponse().getErrorMessage());
-        System.out.print("result:"+result);
 
     }
 
@@ -144,16 +141,18 @@ public class EmployeeControllerTest {
     public void createEmployee_whenCreateOne_thenReturnJsonArray()
             throws Exception {
         MediaType textPlainUtf8 = new MediaType(MediaType.APPLICATION_JSON, Charset.forName("UTF-8"));
-        Employee employee = new Employee("Sam", "Gangee", "ring bearer");
-        String json = mapper.writeValueAsString(employee);
+        String firstName = "Same";
+        String lastName = "Gangee";
+        String role = "ring bearer";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder().firstName(firstName).lastName(lastName).role(role).build();
+        String json = mapper.writeValueAsString(employeeDTO);
         MvcResult result = mvc.perform(post("/employees")
                 .content(json)
                 .contentType(textPlainUtf8))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
-                .andExpect(jsonPath("$.role", is(employee.getRole())))
-                .andExpect(jsonPath("$.name", is(employee.getName())))
+                .andExpect(jsonPath("$.firstName", is(employeeDTO.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(employeeDTO.getLastName())))
+                .andExpect(jsonPath("$.role", is(employeeDTO.getRole())))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/3")))
                 .andExpect(jsonPath("$._links.employees.href", is("http://localhost/employees")))
                 .andReturn();
@@ -163,16 +162,18 @@ public class EmployeeControllerTest {
     @DirtiesContext
     public void updateEmployee_whenUpdateOne_thenReturnJsonArray()
             throws Exception {
-        Employee employee = new Employee("Bilbo", "Baggins", "ex ring bearer");
-        String json = mapper.writeValueAsString(employee);
+        String firstName = "bilbo";
+        String lastName = "baggins";
+        String role = "ring bearer";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder().firstName(firstName).lastName(lastName).role(role).build();
+        String json = mapper.writeValueAsString(employeeDTO);
         MvcResult result = mvc.perform(put("/employees/1")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
-                .andExpect(jsonPath("$.role", is(employee.getRole())))
-                .andExpect(jsonPath("$.name", is(employee.getName())))
+                .andExpect(jsonPath("$.firstName", is(employeeDTO.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(employeeDTO.getLastName())))
+                .andExpect(jsonPath("$.role", is(employeeDTO.getRole())))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/1")))
                 .andExpect(jsonPath("$._links.employees.href", is("http://localhost/employees")))
                 .andReturn();
@@ -181,13 +182,15 @@ public class EmployeeControllerTest {
     @Test
     public void updateEmployee_whenUpdateOne_thenThrowNotAllowed()
             throws Exception {
-        Employee employee = new Employee("Bilbo", "Baggins", "ex ring bearer");
-        String json = mapper.writeValueAsString(employee);
+        String firstName = "Bilbo";
+        String lastName = "Baggins";
+        String role = "ring bearer";
+        EmployeeDTO employeeDTO = EmployeeDTO.builder().firstName(firstName).lastName(lastName).role(role).build();
+        String json = mapper.writeValueAsString(employeeDTO);
         MvcResult result = mvc.perform(post("/employees/1")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
-
 }
