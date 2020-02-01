@@ -52,7 +52,6 @@ public class ResponseController {
 
     private static final Logger LOGGER
             = LoggerFactory.getLogger(ResponseController.class);
-    public static final String VERSION = "1.0";
 
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
@@ -73,14 +72,12 @@ public class ResponseController {
     @GetMapping("/headers")
     public final ResponseEntity<String> customHeader(final HttpServletRequest request, @RequestHeader final HttpHeaders headers) throws SocketException {
         final String response = httpServletRequestToString(request, headers);
-
-
         return new ResponseEntity<>(
                 response, headers, HttpStatus.OK);
     }
 
     @GetMapping("/version")
-    public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) throws SocketException {
+    public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) {
         LOGGER.debug("************************** request headers : " + headers);
         String v =  readGitProperties();
         return new ResponseEntity<>(
