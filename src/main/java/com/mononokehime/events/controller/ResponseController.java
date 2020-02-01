@@ -59,8 +59,10 @@ public class ResponseController {
 
         if (request.getHeader("X-Forwarded-For") != null) {
             final String responseValue = forHtml(request.getHeader("X-Forwarded-For"));
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set("X-Forwarded-For", responseValue);
             return new ResponseEntity<>(
-                    responseValue,  HttpStatus.OK);
+                    responseValue,  responseHeaders, HttpStatus.OK);
         } else {
             final String responseValue = forHtml(request.getRemoteAddr());
             return new ResponseEntity<>(
