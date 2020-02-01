@@ -84,6 +84,7 @@
     <sonar.organization>fergusmacd</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+    <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.10.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
     <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
