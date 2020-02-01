@@ -52,6 +52,7 @@ public class ResponseController {
 
     private static final Logger LOGGER
             = LoggerFactory.getLogger(ResponseController.class);
+    public static final String API_VERSION = "1.0";
 
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {

@@ -57,7 +57,7 @@ public class SwaggerConfig {
         return new ApiInfo(
                 "My REST API",
                 "Some custom description of API.",
-                ResponseController.VERSION,
+                ResponseController.API_VERSION,
                 "Terms of service",
                 new Contact("Fergus MacDermot", "www.fergusmac.com", "fakeemail@company.com"),
                 "License of API", "API license URL", Collections.emptyList());
