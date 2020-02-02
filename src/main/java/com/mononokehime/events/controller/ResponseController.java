@@ -50,6 +50,7 @@ import static org.owasp.encoder.Encode.forHtml;
 @RestController
 public class ResponseController {
 
+    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
     private static final Logger LOGGER
             = LoggerFactory.getLogger(ResponseController.class);
     public static final String API_VERSION = "1.0";
@@ -57,10 +58,10 @@ public class ResponseController {
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
 
-        if (request.getHeader("X-Forwarded-For") != null) {
-            final String responseValue = forHtml(request.getHeader("X-Forwarded-For"));
+        if (request.getHeader(X_FORWARDED_FOR) != null) {
+            final String responseValue = forHtml(request.getHeader(X_FORWARDED_FOR));
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("X-Forwarded-For", responseValue);
+            responseHeaders.set(X_FORWARDED_FOR, responseValue);
             return new ResponseEntity<>(
                     responseValue,  responseHeaders, HttpStatus.OK);
         } else {
@@ -93,8 +94,6 @@ public class ResponseController {
         sb.append("Request path info = [" + forHtml(request.getPathInfo()) + CARRIAGE_RETURN);
         sb.append("Request query string = [" + forHtml(request.getQueryString()) + CARRIAGE_RETURN);
         sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
-        sb.append("Request session id = [" + forHtml(request.getRequestedSessionId()) + CARRIAGE_RETURN);
-
         sb.append("Request request url = [" + forHtml(request.getRequestURL().toString()) + CARRIAGE_RETURN);
         sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
         sb.append("Request remote addr = [" + forHtml(request.getRemoteAddr()) + CARRIAGE_RETURN);
