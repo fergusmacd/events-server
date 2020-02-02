@@ -44,62 +44,64 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
 
+import static org.owasp.encoder.Encode.forHtml;
+
 
 @RestController
 public class ResponseController {
 
+    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
     private static final Logger LOGGER
             = LoggerFactory.getLogger(ResponseController.class);
-    public static final String VERSION = "1.0";
+    public static final String API_VERSION = "1.0";
 
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
 
-        if (request.getHeader("X-Forwarded-For") != null) {
+        if (request.getHeader(X_FORWARDED_FOR) != null) {
+            final String responseValue = forHtml(request.getHeader(X_FORWARDED_FOR));
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(X_FORWARDED_FOR, responseValue);
             return new ResponseEntity<>(
-                    request.getHeader("X-Forwarded-For"),  HttpStatus.OK);
+                    responseValue,  responseHeaders, HttpStatus.OK);
         } else {
+            final String responseValue = forHtml(request.getRemoteAddr());
             return new ResponseEntity<>(
-                    request.getRemoteAddr(),  HttpStatus.OK);
+                    responseValue,  HttpStatus.OK);
         }
     }
 
     @GetMapping("/headers")
     public final ResponseEntity<String> customHeader(final HttpServletRequest request, @RequestHeader final HttpHeaders headers) throws SocketException {
         final String response = httpServletRequestToString(request, headers);
-//        return new EntityModel(response,
-//                linkTo(methodOn(ResponseController.class).customHeader(request, headers)).withSelfRel());
-
         return new ResponseEntity<>(
                 response, headers, HttpStatus.OK);
     }
 
     @GetMapping("/version")
-    public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) throws SocketException {
+    public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) {
         LOGGER.debug("************************** request headers : " + headers);
         String v =  readGitProperties();
         return new ResponseEntity<>(
                 v, headers, HttpStatus.OK);
     }
-
+    private static final String CARRIAGE_RETURN = "], \n";
     private String httpServletRequestToString(final HttpServletRequest request, final HttpHeaders headers) throws SocketException {
         final StringBuilder sb = new StringBuilder();
 
 
-        sb.append("Request Context = [" + request.getContextPath() + "], \n");
-        sb.append("Request path info = [" + request.getPathInfo() + "],  \n");
-        sb.append("Request query string = [" + request.getQueryString() + "],  \n");
-        sb.append("Request remote user = [" + request.getRemoteUser() + "],  \n");
-        sb.append("Request session id = [" + request.getRequestedSessionId() + "],  \n");
+        sb.append("Request Context = [" + forHtml(request.getContextPath()) + CARRIAGE_RETURN);
+        sb.append("Request path info = [" + forHtml(request.getPathInfo()) + CARRIAGE_RETURN);
+        sb.append("Request query string = [" + forHtml(request.getQueryString()) + CARRIAGE_RETURN);
+        sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
+        sb.append("Request request url = [" + forHtml(request.getRequestURL().toString()) + CARRIAGE_RETURN);
+        sb.append("Request remote user = [" + forHtml(request.getRemoteUser()) + CARRIAGE_RETURN);
+        sb.append("Request remote addr = [" + forHtml(request.getRemoteAddr()) + CARRIAGE_RETURN);
+        sb.append("Request remote host = [" + forHtml(request.getRemoteHost()) + CARRIAGE_RETURN);
+        sb.append("Request server name = [" + forHtml(request.getServerName()) + CARRIAGE_RETURN);
 
-        sb.append("Request request url = [" + request.getRequestURL().toString() + "],  \n");
-        sb.append("Request remote user = [" + request.getRemoteUser() + "],  \n");
-        sb.append("Request remote addr = [" + request.getRemoteAddr() + "],  \n");
-        sb.append("Request remote host = [" + request.getRemoteHost() + "],  \n");
-        sb.append("Request server name = [" + request.getServerName() + "],  \n");
-
-        sb.append("Request Method = [" + request.getMethod() + "],  \n");
-        sb.append("Request URL Path = [" + request.getRequestURL() + "],  \n");
+        sb.append("Request Method = [" + forHtml(request.getMethod()) + CARRIAGE_RETURN);
+        sb.append("Request URL Path = [" + request.getRequestURL() + CARRIAGE_RETURN);
 
 
         final Enumeration e = NetworkInterface.getNetworkInterfaces();
@@ -109,19 +111,13 @@ public class ResponseController {
             while (enumeration.hasMoreElements()) {
                 final InetAddress i = (InetAddress) enumeration.nextElement();
                 sb.append("Network address: " + i.getHostAddress() + "\n");
-                //System.out.println(i.getHostAddress());
             }
         }
-
-//        final String headers =
-//                Collections.list(request.getHeaderNames()).stream()
-//                        .map(headerName -> headerName + " : " + Collections.list(request.getHeaders(headerName)))
-//                        .collect(Collectors.joining(", "));
 
         if (headers.isEmpty()) {
             sb.append("Request headers: NONE,");
         } else {
-            sb.append("Request headers: [" + headers + "],  \n");
+            sb.append("Request headers: [" + headers + CARRIAGE_RETURN);
         }
 
         final String parameters =

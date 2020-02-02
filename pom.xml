@@ -60,6 +60,7 @@
     <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
     <dependency-check-maven.version>5.3.0</dependency-check-maven.version>
     <distributionManagement.url>s3://maven.fergusmac.com</distributionManagement.url>
+    <encoder.version>1.2.1</encoder.version>
     <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
     <gitlog-maven-plugin.version>1.13.17</gitlog-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
@@ -116,7 +117,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>${commons-lang3.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-bean-validators</artifactId>
@@ -132,6 +132,13 @@
       <artifactId>springfox-swagger-ui</artifactId>
       <version>${springfox-swagger2.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.owasp.encoder/encoder -->
+    <dependency>
+      <groupId>org.owasp.encoder</groupId>
+      <artifactId>encoder</artifactId>
+      <version>${encoder.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-spring-web</artifactId>
@@ -184,9 +191,9 @@
     https://github.com/opentracing-contrib/java-spring-jaeger
     -->
     <!--<dependency>-->
-      <!--<groupId>io.opentracing.contrib</groupId>-->
-      <!--<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>-->
-      <!--<version>2.0.3</version>-->
+    <!--<groupId>io.opentracing.contrib</groupId>-->
+    <!--<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>-->
+    <!--<version>2.0.3</version>-->
     <!--</dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -45,6 +45,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,8 +74,30 @@ public class ResponseControllerTest {
         String content = result.getResponse().getContentAsString();
 
         Properties response = mapper.readValue(content, Properties.class);
- //       assertEquals("2019-02-10T16:23:10+0800", response.get("git.build.time"));
         System.out.print("******************************************* response"+response);
+    }
+
+    @Test
+    public void givenResponse_whenPrintCallerAddressNoHeader_thenReturnV()
+            throws Exception {
+
+        MvcResult result = mvc.perform(get("/print-caller-address")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().doesNotExist("X-Forwarded-For"))
+                .andReturn();
+    }
+
+    @Test
+    public void givenResponse_whenPrintCallerAddress_thenReturnHeader()
+            throws Exception {
+
+        MvcResult result = mvc.perform(get("/print-caller-address")
+                .header("X-Forwarded-For", "something")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().exists("X-Forwarded-For"))
+                .andReturn();
     }
 
     @Test
@@ -85,9 +108,6 @@ public class ResponseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        System.out.print("******************************************* response"+content);
     }
 
 }
