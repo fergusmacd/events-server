@@ -82,7 +82,7 @@ public class ResponseController {
     @GetMapping("/version")
     public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) {
         if (LOGGER.isDebugEnabled()) {
-            final String message = String.format("************************** request headers : %d", headers);
+            final String message = String.format("************************** request headers : %s", headers.toString());
             LOGGER.debug(message);
         }
         final String v =  readGitProperties();

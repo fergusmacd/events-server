@@ -22,46 +22,33 @@ package com.mononokehime.events.data;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.validator.constraints.URL;
+import org.joda.time.DateTime;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 public class Event extends RepresentationModel<Event> {
-
     private @Id
     @GeneratedValue
-    Long id;
-    @Size(min=2, message="{name.minsize}")
-    @Size(max=16, message="{name.maxsize}")
-    private String firstName;
-    private String lastName;
-    private String role;
+    UUID id;
 
-    public Event(final String firstName, final String lastName, final String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
+    private String venue;
+    private DateTime startDateTime;
+    @URL
+    private String bookingURL;
+    private String name;
+    private String description;
+    private String countryCode;
 
-    public final String getName() {
-        return this.firstName + " " + this.lastName;
-    }
-
-    public final void setName(final String name) {
-        String[] parts = name.split(" ");
-        this.firstName = parts[0];
-        this.lastName = parts[1];
-    }
 }
