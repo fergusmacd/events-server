@@ -21,7 +21,6 @@ package com.mononokehime.events.data;
  */
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import org.joda.time.DateTime;
@@ -30,7 +29,6 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
