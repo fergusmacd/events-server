@@ -91,7 +91,7 @@ public class EmployeeControllerTest {
         MvcResult result = mvc.perform(get("/employees")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.employeeDToes", hasSize(2)))
+                .andExpect(jsonPath("$._embedded.employeeDTOList", hasSize(2)))
                 .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees"))).andReturn();
 
     }
