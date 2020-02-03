@@ -162,11 +162,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-vault-config</artifactId>
-      <version>${spring-cloud-starter-vault-config.version}</version>
-    </dependency>
     <!-- opentracing from spring cloud
      https://github.com/opentracing-contrib/java-spring-cloud
      -->
@@ -175,19 +170,6 @@
       <artifactId>opentracing-spring-cloud-starter</artifactId>
       <version>0.4.0</version>
     </dependency>
-    <!--<dependency>-->
-    <!--<groupId>io.jaegertracing</groupId>-->
-    <!--<artifactId>jaeger-core</artifactId>-->
-    <!--<version>${version.jaeger}</version>-->
-    <!--</dependency>-->
-    <!-- jaeger tracing
-    https://github.com/opentracing-contrib/java-spring-jaeger
-    -->
-    <!--<dependency>-->
-    <!--<groupId>io.opentracing.contrib</groupId>-->
-    <!--<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>-->
-    <!--<version>2.0.3</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

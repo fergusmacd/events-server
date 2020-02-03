@@ -128,55 +128,6 @@ curl -v localhost:8000/actuator/env
 
 ```
 
-## Jaeger Distributed Tracing
-This is turned on with the following dependencies
-```bash
-#     https://github.com/opentracing-contrib/java-spring-cloud
-
-    <dependency>
-      <groupId>io.opentracing.contrib</groupId>
-      <artifactId>opentracing-spring-cloud-starter</artifactId>
-      <version>0.3.1</version>
-    </dependency>
-
-#   https://github.com/opentracing-contrib/java-spring-jaeger
-
-    <dependency>
-      <groupId>io.opentracing.contrib</groupId>
-      <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
-      <version>2.0.0</version>
-    </dependency>
-```
-### Jaeger with Docker compose
-Start the server up in docker-compose with the jaeger agents:
-```bash
-
-docker-compose -f docker-compose-jaeger.yml up
-```
-
-### Jaeger with Docker
-If you want to go old school you can run the app and Jaeger standalone like this
- ```bash
-# Create a local network, check what is there
-docker network ls
-docker network create jaeger_network
-docker run --rm -it --name demo --network jaeger_network -p 8000:8000 mononoke/demo-app:latest
-docker run --rm -it --name jaeger --network jaeger_network  -e COLLECTOR_ZIPKIN_HTTP_PORT=9411   -p 5775:5775/udp   -p 6831:6831/udp   -p 6832:6832/udp   -p 5778:5778   -p 16686:16686   -p 14268:14268   -p 9411:9411   jaegertracing/all-in-one:1.8
-# note the old docker --link command is deprecated
-```
-
-Now, send some requests in, using some context spanning requests:
-```bash
-curl -v http://localhost:8000/chaining-employee
-```
-
-Open up the Jaeger console (http://localhost:16688/search), select the demo-app service and query for results. You will see
-the incoming request, the re-direct and then the DB query.
-
-* Couple of things to note. In the chaincontroller, the downstream request is hard coded to localhost
-* If you run docker containers standalone, the application.yml uses jaeger as the host name, as per the container name
-
-
 ## Updating the alpine image
 Run the following commands inside the demo-app container
 ```bash
