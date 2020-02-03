@@ -50,10 +50,11 @@ import static org.owasp.encoder.Encode.forHtml;
 @RestController
 public class ResponseController {
 
-    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
+    private static final String X_FORWARDED_FOR = "X-Forwarded-For";
     private static final Logger LOGGER
             = LoggerFactory.getLogger(ResponseController.class);
     public static final String API_VERSION = "1.0";
+    private static final String CARRIAGE_RETURN = "], \n";
 
     @GetMapping("/print-caller-address")
     public final ResponseEntity<String>  getCallerAddress(final HttpServletRequest request) {
@@ -80,12 +81,14 @@ public class ResponseController {
 
     @GetMapping("/version")
     public final  ResponseEntity<String> version(@RequestHeader final HttpHeaders headers) {
-        LOGGER.debug("************************** request headers : " + headers);
-        String v =  readGitProperties();
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("************************** request headers : " + headers);
+        }
+        final String v =  readGitProperties();
         return new ResponseEntity<>(
                 v, headers, HttpStatus.OK);
     }
-    private static final String CARRIAGE_RETURN = "], \n";
+
     private String httpServletRequestToString(final HttpServletRequest request, final HttpHeaders headers) throws SocketException {
         final StringBuilder sb = new StringBuilder();
 
@@ -101,7 +104,6 @@ public class ResponseController {
         sb.append("Request server name = [" + forHtml(request.getServerName()) + CARRIAGE_RETURN);
 
         sb.append("Request Method = [" + forHtml(request.getMethod()) + CARRIAGE_RETURN);
-        sb.append("Request URL Path = [" + request.getRequestURL() + CARRIAGE_RETURN);
 
 
         final Enumeration e = NetworkInterface.getNetworkInterfaces();
@@ -130,7 +132,9 @@ public class ResponseController {
         } else {
             sb.append("Request parameters: [" + parameters + "].  \n");
         }
-        LOGGER.debug(sb.toString());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(sb.toString());
+        }
         return sb.toString();
     }
 
@@ -140,7 +144,7 @@ public class ResponseController {
         try {
             return readFromInputStream(inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(e.getMessage());
             return "Version information could not be retrieved";
         }
     }
