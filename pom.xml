@@ -89,8 +89,6 @@
     <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.10.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
-    <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-    <springfox-swagger2-snapshot.version>3.0.0-SNAPSHOT</springfox-swagger2-snapshot.version>
     <version.jaeger>0.27.0</version.jaeger>
     <spring-cloud-starter-vault-config.version>2.2.1.RELEASE</spring-cloud-starter-vault-config.version>
   </properties>
@@ -102,9 +100,29 @@
     -->
   <dependencies>
     <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox-swagger2-snapshot.version}</version>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.2.29</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-common -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-common</artifactId>
+      <version>1.2.29</version>
+      <!-- exclusion needed to fix this:
+      https://github.com/springdoc/springdoc-openapi/issues/133 -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.github.classgraph</groupId>
+          <artifactId>classgraph</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webmvc-core &ndash;&gt;-->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-webmvc-core</artifactId>
+      <version>1.2.29</version>
     </dependency>
     <dependency>
       <groupId>org.modelmapper</groupId>
@@ -117,21 +135,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>${commons-lang3.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-bean-validators</artifactId>
-      <version>${springfox-swagger2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-data-rest</artifactId>
-      <version>${springfox-swagger2-snapshot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox-swagger2.version}</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.owasp.encoder/encoder -->
     <dependency>
       <groupId>org.owasp.encoder</groupId>
@@ -139,16 +142,6 @@
       <version>${encoder.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-spring-web</artifactId>
-      <version>${springfox-swagger2-snapshot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-spring-webmvc</artifactId>
-      <version>${springfox-swagger2-snapshot.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-hateoas</artifactId>
@@ -169,11 +162,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-vault-config</artifactId>
-      <version>${spring-cloud-starter-vault-config.version}</version>
-    </dependency>
     <!-- opentracing from spring cloud
      https://github.com/opentracing-contrib/java-spring-cloud
      -->
@@ -182,19 +170,6 @@
       <artifactId>opentracing-spring-cloud-starter</artifactId>
       <version>0.4.0</version>
     </dependency>
-    <!--<dependency>-->
-    <!--<groupId>io.jaegertracing</groupId>-->
-    <!--<artifactId>jaeger-core</artifactId>-->
-    <!--<version>${version.jaeger}</version>-->
-    <!--</dependency>-->
-    <!-- jaeger tracing
-    https://github.com/opentracing-contrib/java-spring-jaeger
-    -->
-    <!--<dependency>-->
-    <!--<groupId>io.opentracing.contrib</groupId>-->
-    <!--<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>-->
-    <!--<version>2.0.3</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
