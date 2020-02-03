@@ -1,4 +1,4 @@
-package com.mononokehime.events.data;
+package com.mononokehime.events.model;
 
 /*-
  * #%L
@@ -21,22 +21,24 @@ package com.mononokehime.events.data;
  */
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import org.joda.time.DateTime;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.UUID;
 
-@Data
-@Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
-public class Event extends RepresentationModel<Event> {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@ToString
+@EqualsAndHashCode(exclude = {"id"})
+public class EventDTO extends RepresentationModel<EventDTO> {
     private @Id
     @GeneratedValue
     UUID id;

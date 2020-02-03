@@ -146,7 +146,7 @@ https://www.baeldung.com/spring-boot-app-as-a-service
 Hateoas examples
 https://github.com/spring-projects/spring-hateoas-examples
 Swagger config
-https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+[Spring Docs](https://springdoc.github.io/springdoc-openapi-demos/faq.html)
 Actuator
 https://docs.spring.io/spring-boot/docs/2.0.x/actuator-api/html/
 https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html#production-ready-endpoints-enabling-endpoints
@@ -155,8 +155,9 @@ Git commit plugin
 https://dzone.com/articles/maven-git-commit-id-plugin
 [Spring Boot Validation](https://www.baeldung.com/spring-boot-bean-validation)
 [Chaos Monkey](https://www.baeldung.com/spring-boot-chaos-monkey)
-[Spring Docs](https://springdoc.github.io/springdoc-openapi-demos/faq.html)
-
 
 ### Logback
 https://logback.qos.ch/manual/configuration.html
+
+### Country Codes
+[GitHub](https://github.com/TakahikoKawasaki/nv-i18n)
