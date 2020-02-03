@@ -23,7 +23,7 @@ package com.mononokehime.events.common;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-public class LocaleDateFormatter {
+public final class LocaleDateFormatter {
     private LocaleDateFormatter() {
     }
 
