@@ -88,7 +88,7 @@
     <sonar.projectKey>fergusmacd_events-server</sonar.projectKey>
     <sonar.organization>fergusmacd</sonar.organization>
     <sonar.sources>src/main/java</sonar.sources>
-    <sortpom-maven-plugin.version>2.10.0</sortpom-maven-plugin.version>
+    <sortpom-maven-plugin.version>2.11.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
     <springdoc.version>1.2.29</springdoc.version>
   </properties>
