@@ -29,7 +29,6 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -39,7 +38,7 @@ import java.util.UUID;
 public class Event extends RepresentationModel<Event> {
     private @Id
     @GeneratedValue
-    UUID id;
+    Long id;
 
     private String venue;
     private DateTime startDateTime;

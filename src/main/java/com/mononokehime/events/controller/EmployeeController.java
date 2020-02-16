@@ -126,7 +126,7 @@ class EmployeeController {
 
     @Timed("employees-update")
     @PutMapping("/employees/{id}")
-    public ResponseEntity<?> replaceEmployee(@RequestBody final EmployeeDTO employeeDTO, @PathVariable final Long id) throws URISyntaxException {
+    public ResponseEntity<?> replaceEmployee(@RequestBody final EmployeeDTO employeeDTO, @PathVariable final long id) throws URISyntaxException {
         Employee newEmployee = modelMapper.map(employeeDTO, Employee.EmployeeBuilder.class).build();
 
         Employee updatedEmployee = repository.findById(id)

@@ -21,7 +21,6 @@ package com.mononokehime.events.controller;
  */
 
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mononokehime.events.EventsApplication;
 import com.mononokehime.events.data.SinglePostgresqlContainer;
@@ -41,12 +40,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Properties;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
