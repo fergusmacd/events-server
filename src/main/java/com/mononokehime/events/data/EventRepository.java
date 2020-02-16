@@ -21,31 +21,12 @@ package com.mononokehime.events.data;
  */
 
 
-import lombok.*;
-import org.hibernate.validator.constraints.URL;
-import org.joda.time.DateTime;
-import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
-@Data
-@Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
-@Builder
-public class Event extends RepresentationModel<Event> {
-    private @Id
-    @GeneratedValue
-    Long id;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    private String venue;
-    private DateTime startDateTime;
-    @URL
-    private String bookingURL;
-    private String name;
-    private String description;
-    private String countryCode;
+@Repository
+public interface EventRepository extends JpaRepository<Event, Long> {
 
 }

@@ -21,18 +21,12 @@ package com.mononokehime.events.model;
  */
 
 
-import com.mononokehime.events.data.Employee;
 import com.mononokehime.events.data.Event;
 import com.neovisionaries.i18n.CountryCode;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 

@@ -21,8 +21,6 @@ package com.mononokehime.events.data;
  */
 
 
-import com.mononokehime.events.common.LocaleDateFormatter;
-import com.mononokehime.events.model.EmployeeDTO;
 import com.mononokehime.events.model.EventDTO;
 import com.neovisionaries.i18n.CountryCode;
 import org.joda.time.DateTime;

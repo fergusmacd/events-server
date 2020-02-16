@@ -21,7 +21,6 @@ package com.mononokehime.events.controller;
  */
 
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mononokehime.events.EventsApplication;
 import com.mononokehime.events.config.CustomMessageSourceConfiguration;
@@ -34,17 +33,10 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -52,14 +44,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.nio.charset.Charset;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.verify;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -153,7 +140,7 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.firstName", is(employeeDTO.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(employeeDTO.getLastName())))
                 .andExpect(jsonPath("$.role", is(employeeDTO.getRole())))
-                .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/3")))
+                .andExpect(jsonPath("$._links.self.href", is("http://localhost/employees/5")))
                 .andExpect(jsonPath("$._links.employees.href", is("http://localhost/employees")))
                 .andReturn();
     }

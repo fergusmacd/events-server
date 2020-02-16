@@ -29,7 +29,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.UUID;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -41,12 +41,14 @@ import java.util.UUID;
 public class EventDTO extends RepresentationModel<EventDTO> {
     private @Id
     @GeneratedValue
-    UUID id;
+    Long id;
 
     private String venue;
     private DateTime startDateTime;
     @URL
     private String bookingURL;
+    @Size(min = 2, message = "{name.minsize}")
+    @Size(max = 16, message = "{name.maxsize}")
     private String name;
     private String description;
     private String countryCode;

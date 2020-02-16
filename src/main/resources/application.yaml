@@ -54,6 +54,8 @@ management:
       enabled: true
     env:
       enabled: true
+    mappings:
+      enabled: true
 fake-key: my-properties-google-key
 springdoc:
   show-actuator: true

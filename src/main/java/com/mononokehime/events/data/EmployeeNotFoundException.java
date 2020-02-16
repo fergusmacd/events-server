@@ -21,8 +21,6 @@ package com.mononokehime.events.data;
  */
 
 
-
-
 public class EmployeeNotFoundException extends RuntimeException {
     public EmployeeNotFoundException(final Long id) {
         super("Could not find employee " + id);
