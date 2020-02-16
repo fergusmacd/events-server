@@ -23,6 +23,7 @@ package com.mononokehime.events.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mononokehime.events.EventsApplication;
+import com.mononokehime.events.LoadDatabase;
 import com.mononokehime.events.config.CustomMessageSourceConfiguration;
 import com.mononokehime.events.data.EventRepository;
 import com.mononokehime.events.data.SinglePostgresqlContainer;
@@ -86,13 +87,12 @@ public class EventControllerTest {
     }
 
     @Test
-    public void givenEVENTS_whenRequestOne_thenReturnJsonArray()
+    public void givenEvents_whenRequestOne_thenReturnJsonArray()
             throws Exception {
-        Integer id = new Integer(3);
-        MvcResult result = mvc.perform(get("/events/"+id)
+        MvcResult result = mvc.perform(get("/events/"+ LoadDatabase.firstID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(id)))
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.countryCode", is("HK")))
                 .andExpect(jsonPath("$.venue", is("AsiaWorldExpo"))).andReturn();
     }
@@ -148,7 +148,7 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.name", is(dto.getName())))
                 .andExpect(jsonPath("$.description", is(dto.getDescription())))
                 .andExpect(jsonPath("$.venue", is(dto.getVenue())))
-                .andExpect(jsonPath("$._links.self.href", is("http://localhost/events/5")))
+                .andExpect(jsonPath("$._links.self.href", is("http://localhost/events/3")))
                 .andExpect(jsonPath("$._links.events.href", is("http://localhost/events")))
                 .andReturn();
     }
@@ -190,7 +190,7 @@ public class EventControllerTest {
 
         EventDTO dto = EventDTO.builder().countryCode(countryCode).description(description).name(name).bookingURL(bookingURL).venue(venue).build();
         String json = mapper.writeValueAsString(dto);
-        MvcResult result = mvc.perform(post("/employees/1")
+        MvcResult result = mvc.perform(post("/events/1")
                 .content(json)
                 .contentType(textPlainUtf8))
                 .andExpect(status().isMethodNotAllowed())
