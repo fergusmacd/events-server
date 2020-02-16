@@ -21,12 +21,6 @@ package com.mononokehime.events;
  */
 
 
-
-
-
-
-import com.mononokehime.events.data.Employee;
-import com.mononokehime.events.data.EmployeeRepository;
 import com.mononokehime.events.data.Event;
 import com.mononokehime.events.data.EventRepository;
 import com.neovisionaries.i18n.CountryCode;
@@ -38,23 +32,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Slf4j
-class LoadDatabase {
+public class LoadDatabase {
+    public static final Long firstID = new Long(1);
+    public static final Long secondID = new Long(2);
 
-    @Bean
-    CommandLineRunner initEmployeeDatabase(final EmployeeRepository repository) {
-        return args -> {
-            String firstName = "bilbo";
-            String lastName = "baggins";
-            String role = "wraith";
-            Employee employee = Employee.builder().id(new Long(1)).firstName(firstName).lastName(lastName).role(role).build();
-            log.info("Preloading " + repository.save(employee));
-            firstName = "Frodo";
-            lastName = "Baggins";
-            role = "thief";
-            employee = Employee.builder().id(new Long(2)).firstName(firstName).lastName(lastName).role(role).build();
-            log.info("Preloading " + repository.save(employee));
-        };
-    }
     @Bean
     CommandLineRunner initEventsDatabase(final EventRepository repository) {
         return args -> {
@@ -65,7 +46,7 @@ class LoadDatabase {
             String venue = "AsiaWorldExpo";
 
             DateTime dateTime = new DateTime();
-            Event entity = Event.builder().id(new Long(3)).countryCode(countryCode).description(description).name(name).bookingURL(bookingURL).startDateTime(dateTime).venue(venue).build();
+            Event entity = Event.builder().id(firstID).countryCode(countryCode).description(description).name(name).bookingURL(bookingURL).startDateTime(dateTime).venue(venue).build();
 
             log.info("Preloading " + repository.save(entity));
             countryCode = CountryCode.getByCode("HK").getAlpha2();
@@ -75,7 +56,7 @@ class LoadDatabase {
             venue = "Kitec";
 
             dateTime = new DateTime();
-            entity = Event.builder().id(new Long(4)).countryCode(countryCode).description(description).name(name).bookingURL(bookingURL).startDateTime(dateTime).venue(venue).build();
+            entity = Event.builder().id(secondID).countryCode(countryCode).description(description).name(name).bookingURL(bookingURL).startDateTime(dateTime).venue(venue).build();
             log.info("Preloading " + repository.save(entity));
         };
     }

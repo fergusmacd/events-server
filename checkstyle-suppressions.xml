@@ -14,15 +14,12 @@ https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/suppressions-f
     <suppress checks="Indentation" files="."/>
     <suppress checks="LineLength" files="."/>
     <suppress checks="NewlineAtEndOfFile" files="."/>
-    <suppress checks="HiddenField" files="Employee"/>
     <suppress checks="HiddenField" files="Event"/>
-    <suppress checks="HideUtilityClassConstructor" files="DemoApplication"/>
+    <suppress checks="HideUtilityClassConstructor" files="EventsApplication"/>
     <suppress checks="DesignForExtension" files="SwaggerConfig"/>
     <suppress checks="DesignForExtension" files="CustomMessageSourceConfiguration"/>
     <suppress checks="AvoidStarImport" files="."/>
     <suppress checks="DesignForExtension" files="RequestLoggingFilterConfig"/>
-    <suppress checks="MagicNumber" files="Employee"/>
-    <suppress checks="MagicNumber" files="EmployeeDTO"/>
     <suppress checks="MagicNumber" files="Event"/>
     <suppress checks="MagicNumber" files="EventDTO"/>
     <suppress checks="RegexpSingleline" files="."/>
