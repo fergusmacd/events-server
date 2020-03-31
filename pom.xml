@@ -89,7 +89,7 @@
     <sonar.organization>fergusmacd</sonar.organization>
     <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.11.0</sortpom-maven-plugin.version>
-    <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
+    <spotbugs-maven-plugin.version>4.0.0</spotbugs-maven-plugin.version>
     <springdoc.version>1.2.33</springdoc.version>
   </properties>
   <!-- unused in this project
