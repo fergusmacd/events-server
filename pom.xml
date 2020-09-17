@@ -109,14 +109,6 @@
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-common</artifactId>
       <version>${springdoc.version}</version>
-      <!-- exclusion needed to fix this:
-      https://github.com/springdoc/springdoc-openapi/issues/133 -->
-      <exclusions>
-        <exclusion>
-          <artifactId>classgraph</artifactId>
-          <groupId>io.github.classgraph</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webmvc-core &ndash;&gt;-->
     <dependency>
