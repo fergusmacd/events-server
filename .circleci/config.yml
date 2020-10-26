@@ -41,9 +41,10 @@ jobs:
           command: |
             if [[ ! -z "$IS_MACHINE_EXECUTOR" ]]; then
               cd /opt
-              sudo wget http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
-              sudo tar -xvsf apache-maven-3.5.4-bin.tar.gz
-              echo "export PATH=/opt/apache-maven-3.5.4/bin:$PATH" >> $BASH_ENV
+              maven_version=3.6.3
+              sudo wget https://downloads.apache.org/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz
+              sudo tar -xvsf apache-maven-${maven_version}-bin.tar.gz
+              echo "export PATH=/opt/apache-maven-${maven_version}/bin:$PATH" >> $BASH_ENV
               echo
               echo "Updated mvn executable:"
               mvn --version
