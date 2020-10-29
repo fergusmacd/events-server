@@ -79,7 +79,7 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-s3-wagon.version>1.2.0</maven-s3-wagon.version>
     <modelmapper.version>2.3.8</modelmapper.version>
-    <micrometer.version>1.5.5</micrometer.version>
+    <micrometer.version>1.5.6</micrometer.version>
     <nv-i18n.version>1.27</nv-i18n.version>
     <postgresql-test.version>1.14.3</postgresql-test.version>
     <sonar.coverage.exclusions>**/*Repository.java,**/*Exception.java,**/*Advice.java,**/*Assembler.java,**/ResponseController.java</sonar.coverage.exclusions>
