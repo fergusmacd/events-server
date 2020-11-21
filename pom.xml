@@ -165,7 +165,7 @@
     <dependency>
       <groupId>io.opentracing.contrib</groupId>
       <artifactId>opentracing-spring-cloud-starter</artifactId>
-      <version>0.5.8</version>
+      <version>0.5.9</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -646,7 +646,7 @@
                   <ignore>com.mononokehime.events.data.*</ignore>
                 </ignores>
                 <excludes>
-                  <exclude></exclude>
+                  <exclude/>
                   <exclude>com/mononokehime/**/*Test.class</exclude>
                 </excludes>
               </instrumentation>
