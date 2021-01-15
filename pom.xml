@@ -84,7 +84,7 @@
     <postgresql-test.version>1.15.0</postgresql-test.version>
     <sonar.coverage.exclusions>**/*Repository.java,**/*Exception.java,**/*Advice.java,**/*Assembler.java,**/ResponseController.java</sonar.coverage.exclusions>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+    <sonar-maven-plugin.version>3.8.0.2131</sonar-maven-plugin.version>
     <sonar.projectKey>fergusmacd_events-server</sonar.projectKey>
     <sonar.organization>fergusmacd</sonar.organization>
     <sonar.sources>src/main/java</sonar.sources>
