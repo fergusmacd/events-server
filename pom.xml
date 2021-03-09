@@ -58,7 +58,7 @@
     <commons-lang3.version>3.11</commons-lang3.version>
     <docker.image.prefix>mononoke</docker.image.prefix>
     <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
-    <dependency-check-maven.version>6.0.3</dependency-check-maven.version>
+    <dependency-check-maven.version>6.1.2</dependency-check-maven.version>
     <distributionManagement.url>s3://maven.fergusmac.com</distributionManagement.url>
     <encoder.version>1.2.3</encoder.version>
     <git-commit-id-plugin.version>4.0.2</git-commit-id-plugin.version>
