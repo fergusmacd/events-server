@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 orbs:
-  mvn: scx/mvn@1.1.14
+  mvn: scx/mvn@2.0.1
 version: 2.1
 executorType: machine
 jobs:

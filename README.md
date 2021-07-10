@@ -48,8 +48,8 @@ For details see the pom.xml. The maven features leveraged are:
 The project can be built with the following targets
 ```bash
 mvn clean install
-# to generate the site and reports
 mvn site install -P reporting
+# to generate the site and reports
 ```
 
 ## Docker build
