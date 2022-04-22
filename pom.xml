@@ -90,7 +90,7 @@
     <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.12.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>4.1.4</spotbugs-maven-plugin.version>
-    <springdoc.version>1.4.8</springdoc.version>
+    <springdoc.version>1.6.8</springdoc.version>
   </properties>
   <!-- unused in this project
     <issueManagement>
