@@ -55,7 +55,7 @@
   </distributionManagement>
   <properties>
     <checkstyle.configLocation>sun_checks.xml</checkstyle.configLocation>
-    <commons-lang3.version>3.11</commons-lang3.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
     <docker.image.prefix>mononoke</docker.image.prefix>
     <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
     <dependency-check-maven.version>6.0.3</dependency-check-maven.version>
@@ -90,7 +90,7 @@
     <sonar.sources>src/main/java</sonar.sources>
     <sortpom-maven-plugin.version>2.12.0</sortpom-maven-plugin.version>
     <spotbugs-maven-plugin.version>4.1.4</spotbugs-maven-plugin.version>
-    <springdoc.version>1.4.8</springdoc.version>
+    <springdoc.version>1.7.0</springdoc.version>
   </properties>
   <!-- unused in this project
     <issueManagement>
